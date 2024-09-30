@@ -3,11 +3,6 @@ const stripe = require('stripe')('sk_test_51Q4mm4D5VW5CurvPr1QJUAZBunK6sbGwl74Ze
 
 const createCheckoutSession = async (amount, currency, origin) => {
   try {
-
-    
-    
-
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [{
