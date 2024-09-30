@@ -1,4 +1,4 @@
-const stripe = require('stripe')('sk_test_51Q4mm4D5VW5CurvPr1QJUAZBunK6sbGwl74Zez7g62eEg6Wi80NyNSEqEqDw8z7I0a0Qig2A8k9j7MHYLJis8n4M00fc2tyCuo');
+const stripe = require('stripe')('stripekey');
 
 
 const createCheckoutSession = async (amount, currency, origin) => {
