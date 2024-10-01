@@ -7,20 +7,20 @@ const createCheckoutSession = async (amount, currency, origin) => {
       line_items: [{
         price_data: {
           currency: currency,
-          product_data: {
-            name: 'Test Product',
-          },
+          product_data: { name: 'Test Product' },
           unit_amount: amount,
         },
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`, // Fixed template literals
-      cancel_url: `${origin}/cancel`, // Fixed template literals
+      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/cancel`,
     });
-  
+
+    console.log('Checkout session created:', session); // Add this line for debugging
     return { id: session.id };
   } catch (error) {
+    console.error('Error creating checkout session:', error.message); // Add error logging
     throw new Error(error.message);
   }
 };
@@ -31,28 +31,27 @@ const handleWebhook = async (req) => {
 
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    console.log('Received event:', event.type); // Add this line to log the event type
   } catch (err) {
-    console.error(`Webhook signature verification failed: ${err.message}`); // Fixed template literals
-    throw new Error(`Webhook Error: ${err.message}`); // Fixed template literals
+    console.error(`Webhook signature verification failed: ${err.message}`);
+    throw new Error(`Webhook Error: ${err.message}`);
   }
 
   const eventHandlers = {
     'checkout.session.completed': async (session) => {
-      // Handle successful payment here (e.g., update database)
-      console.log('Payment was successful!', session);
+      console.log('Payment was successful:', session); // Handle successful payment
     },
-    // Add more event handlers as needed
   };
 
   const handler = eventHandlers[event.type];
-
   if (handler) {
     await handler(event.data.object);
   } else {
-    console.log(`Unhandled event type ${event.type}`); // Fixed template literals
+    console.log(`Unhandled event type: ${event.type}`);
   }
 
   return { received: true };
 };
+
 
 module.exports = { createCheckoutSession, handleWebhook };

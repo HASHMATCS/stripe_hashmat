@@ -1,10 +1,11 @@
-const express = require('express');
-const { createCheckoutSession ,webhookController} = require('../controller/stripe.controller'); // Import controller
-
 const router = express.Router();
+const { createCheckoutSession, webhookController } = require('../controller/stripe.controller');
+const bodyParser = require('body-parser');
 
-// POST route for creating checkout session
+// Create checkout session route
 router.post('/create-checkout-session', createCheckoutSession);
-router.post('/webhook', webhookController);
+
+// Webhook route with raw body parsing for Stripe signature verification
+router.post('/webhook', bodyParser.raw({ type: 'application/json' }), webhookController);
 
 module.exports = router;
