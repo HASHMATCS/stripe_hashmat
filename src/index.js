@@ -8,8 +8,8 @@ const app = express();
 const port = process.env.PORT || 3000; 
 
 app.use(cors({
-    origin: '*'
-}));
+    origin: 'https://stripe-hashmat.vercel.app', // Replace with your frontend URL
+  }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/stripe',stripeRoutes);
