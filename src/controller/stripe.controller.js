@@ -4,7 +4,7 @@ exports.createCheckoutSession = async (req, res) => {
   const { amount, currency } = req.body;
 
   try {
-    const origin = 'http://localhost:3000';
+    const origin = 'https://stripe-hashmat.vercel.app/';
     const session = await createCheckoutSession(amount, currency,origin);
 
     res.json({ id: session.id });
