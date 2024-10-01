@@ -4,8 +4,8 @@ exports.createCheckoutSession = async (req, res) => {
   const { amount, currency } = req.body;
 
   try {
- 
-    const session = await createCheckoutSession(amount, currency, 'https://stripe-hashmat.vercel.app/');
+    const origin = 'http://localhost:3000';
+    const session = await createCheckoutSession(amount, currency,origin);
 
     res.json({ id: session.id });
   } catch (error) {
@@ -13,11 +13,13 @@ exports.createCheckoutSession = async (req, res) => {
   }
 };
 
+
+
 exports.webhookController = async (req, res) => {
-  try {
-    const response = await handleWebhook(req);
-    res.json(response);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
+    try {
+        const response = await handleWebhook(req);
+        res.json(response);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
 };
